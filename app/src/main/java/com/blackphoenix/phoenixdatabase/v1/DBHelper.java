@@ -19,25 +19,27 @@ public class DBHelper extends SQLiteOpenHelper {
     private static DBHelper dbHelper = null;
 
 
-    public static String CREATE_TABLE = "create table " + "dummy_table"
+    public static String CREATE_TABLE = "CREATE TABLE " + "sample_table"
             + " ( " + "table_id" + " integer not null primary key, "
             + "dummy_id" + " integer, "
             + "dummy_name" + " text, "
             + "dummy_status" + " integer, "
             + "dummy_real" + " real );";
 
-    public static String DROP_TABLE = "DROP TABLE IF EXISTS "+"dummy_table";
+    public static String DROP_TABLE = "DROP TABLE IF EXISTS "+"sample_table";
 
 
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(CREATE_TABLE);
+        // Add your create table query here
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
         sqLiteDatabase.execSQL(DROP_TABLE);
+        // Add your  drop table query here
         onCreate(sqLiteDatabase);
     }
 
@@ -81,10 +83,7 @@ public class DBHelper extends SQLiteOpenHelper {
      */
 
     public long insert(String tableName, ContentValues values) throws SQLiteException {
-        SQLiteDatabase _dbW = this.getWritableDatabase();
-        long  dbReturnValue = _dbW.insert(tableName,null,values);
-        _dbW.close();
-        return dbReturnValue;
+        return DBOperation.insert(this,tableName,values);
     }
 
     /**
@@ -100,11 +99,7 @@ public class DBHelper extends SQLiteOpenHelper {
         TODO: Handle the null values of arguments
      */
     public long update(String tableName, ContentValues values, String whereClause, String whereArgs) throws SQLiteException {
-        SQLiteDatabase _dbW = this.getWritableDatabase();
-        long  dbReturnValue = _dbW.update(tableName,values,whereClause,new String[]{whereArgs});
-        _dbW.close();
-        return dbReturnValue;
-
+        return DBOperation.update(this,tableName,values,whereClause,whereArgs);
     }
 
     /**
@@ -123,17 +118,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
     public Cursor read(String tableName, String[] columnList, String whereClause, String whereArgs) throws SQLiteException,IllegalStateException {
-
-        SQLiteDatabase _dbR = this.getReadableDatabase();
-
-        if(columnList == null) {
-
-            String selectQuery = "select * from " + tableName + " where " + whereClause + " = " + whereArgs;
-            return  _dbR.rawQuery(selectQuery,null);
-
-        } else {
-            return  _dbR.query(tableName,columnList,whereClause,new String[]{whereArgs},null,null,null);
-        }
+        return DBOperation.read(this,tableName,columnList,whereClause,whereArgs);
     }
 
     /**
@@ -148,12 +133,7 @@ public class DBHelper extends SQLiteOpenHelper {
      */
 
     public Cursor readAll(String tableName) throws SQLiteException {
-        // HANDLE CLOSING OF DATABASE
-        SQLiteDatabase _dbR = this.getReadableDatabase();
-        return  _dbR.rawQuery("select * from "+tableName,null);
-        /*_dbR.close();
-        return cursor;*/
-        // HANDLE CLOSING OF DATABASE
+        return DBOperation.readAll(this,tableName);
     }
 
 
@@ -169,18 +149,7 @@ public class DBHelper extends SQLiteOpenHelper {
      */
 
     public int count(String tableName) throws SQLiteException {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        String countQueryClause =  "select * from " + tableName;
-        Cursor cursor = db.rawQuery(countQueryClause,null);
-        if(cursor!= null) {
-            int count = cursor.getCount();
-            cursor.close();
-            db.close();
-            return count;
-        }
-        db.close();
-        return 0;
+        return DBOperation.count(this,tableName);
     }
 
     /**
@@ -195,9 +164,7 @@ public class DBHelper extends SQLiteOpenHelper {
      */
 
     public int delete(String tableName) throws SQLiteException {
-        SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(tableName,"1",null);
-
+        return DBOperation.delete(this,tableName);
     }
 
 
@@ -215,8 +182,7 @@ public class DBHelper extends SQLiteOpenHelper {
      */
 
     public int deleteSelected(String tableName, String whereClause, String[] whereArgs)throws SQLiteException {
-        SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(tableName,whereClause,whereArgs);
+        return DBOperation.deleteSelected(this,tableName,whereClause,whereArgs);
     }
 
 }
