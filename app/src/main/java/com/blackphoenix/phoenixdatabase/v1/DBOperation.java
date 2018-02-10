@@ -52,7 +52,7 @@ public class DBOperation {
      */
     public static long update(SQLiteOpenHelper helper, String tableName, ContentValues values, String whereClause, String whereArgs) throws SQLiteException {
         SQLiteDatabase _dbW = helper.getWritableDatabase();
-        long  dbReturnValue = _dbW.update(tableName,values,whereClause,new String[]{whereArgs});
+        long  dbReturnValue = _dbW.update(tableName,values,whereClause+"=?",new String[]{whereArgs});
         _dbW.close();
         return dbReturnValue;
 
