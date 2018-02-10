@@ -165,9 +165,9 @@ public class DBOperation {
         TODO: Handle the null values of arguments
      */
 
-    public static int deleteSelected(SQLiteOpenHelper helper, String tableName, String whereClause, String[] whereArgs)throws SQLiteException {
+    public static int deleteSelected(SQLiteOpenHelper helper, String tableName, String whereClause, String whereArgs)throws SQLiteException {
         SQLiteDatabase db = helper.getWritableDatabase();
-        return db.delete(tableName,whereClause,whereArgs);
+        return db.delete(tableName,whereClause+"=?",new String[] {whereArgs});
     }
 
 }
