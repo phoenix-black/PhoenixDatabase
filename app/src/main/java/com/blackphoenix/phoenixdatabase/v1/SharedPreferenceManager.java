@@ -50,8 +50,31 @@ public class SharedPreferenceManager {
     }
 
     /*
-        INTEGER
+        LONG
      */
+    public void setLong(String key, long value)
+    {
+        editor.putLong(key, value);
+        editor.apply();
+    }
+
+    public long getLong(String key)
+
+    {
+        return this.getLong(key, -1);
+    }
+
+    public long getLong(String key, long defaultValue)
+
+    {
+        return prefs.getLong(key, defaultValue);
+    }
+
+
+    /*
+      INTEGER
+   */
+
     public void setInt(String key, int value)
     {
         editor.putInt(key, value);
@@ -140,7 +163,7 @@ public class SharedPreferenceManager {
     /*
         DOUBLE
     */
-    public void putDouble(final String key, final double value) {
+    public void setDouble(final String key, final double value) {
         editor.putLong(key, Double.doubleToRawLongBits(value));
     }
 
