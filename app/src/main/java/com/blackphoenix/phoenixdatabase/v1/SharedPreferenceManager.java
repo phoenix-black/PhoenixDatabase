@@ -61,7 +61,13 @@ public class SharedPreferenceManager {
     public int getInt(String key)
 
     {
-        return prefs.getInt(key, 1);
+        return this.getInt(key, -1);
+    }
+
+    public int getInt(String key, int defaultValue)
+
+    {
+        return prefs.getInt(key, defaultValue);
     }
 
     /*
@@ -77,7 +83,12 @@ public class SharedPreferenceManager {
 
     public float getFloat(String key)
     {
-        return prefs.getFloat(key,0);
+        return this.getFloat(key,0);
+    }
+
+    public float getFloat(String key, float defaultValue)
+    {
+        return prefs.getFloat(key,defaultValue);
     }
 
 
@@ -95,7 +106,12 @@ public class SharedPreferenceManager {
 
     public boolean getBoolean(String key)
     {
-        return prefs.getBoolean(key, false);
+        return this.getBoolean(key, false);
+    }
+
+    public boolean getBoolean(String key, boolean defaultValue)
+    {
+        return prefs.getBoolean(key, defaultValue);
     }
 
 
@@ -112,7 +128,32 @@ public class SharedPreferenceManager {
 
     public String getString(String key)
     {
-        return prefs.getString(key, "");
+        return this.getString(key, "");
+    }
+
+    public String getString(String key, String defaultValue)
+    {
+        return prefs.getString(key, defaultValue);
+    }
+
+
+    /*
+        DOUBLE
+    */
+    public void putDouble(final String key, final double value) {
+        editor.putLong(key, Double.doubleToRawLongBits(value));
+    }
+
+
+    public double getDouble(final String key) {
+            return this.getDouble(key,0);
+    }
+
+    public double getDouble(final String key, final double defaultValue) {
+        if ( !prefs.contains(key))
+            return defaultValue;
+
+        return Double.longBitsToDouble(prefs.getLong(key, 0));
     }
 
 
